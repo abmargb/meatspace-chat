@@ -47,10 +47,7 @@ define(['jquery', './base/transform', 'gumhelper', './base/videoShooter', 'finge
     animation: 'none',
     position: 'up left'
   });
-  var socket = io.connect(
-    location.protocol + '//' + location.hostname +
-    (location.port ? ':' + location.port : '')
-  );
+  
   var unreadMessages = 0;
   var pageHidden = 'hidden';
   var pageVisibilityChange = 'visibilitychange';
@@ -405,6 +402,8 @@ define(['jquery', './base/transform', 'gumhelper', './base/videoShooter', 'finge
           svg.attr('class', 'progress');
 
           debug('Sending chat');
+          //TODO Send chat
+          console.log(submission);
           $.post('/add/chat', $.extend(submission, auth), function () {
             if (window.ga) {
               window.ga('send', 'event', 'message', 'send');
@@ -429,9 +428,10 @@ define(['jquery', './base/transform', 'gumhelper', './base/videoShooter', 'finge
     menu.list.toggle();
   });
 
-  socket.on('message', function (data) {
-    render(data.chat);
-  });
+//  TODO Render new messages
+//  socket.on('message', function (data) {
+//    render(data.chat);
+//  });
 
   $(document).on(pageVisibilityChange, handleVisibilityChange);
 });

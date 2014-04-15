@@ -4,8 +4,6 @@ module.exports = function(app, configurations, express) {
   var i18n = require('i18next');
   var maxAge = 24 * 60 * 60 * 1000 * 28;
   var nativeClients = require('./clients.json');
-  var RedisStore = require('connect-redis')(express);
-  var passport = require('passport');
   var csrf = express.csrf();
 
   nconf.argv().env().file({ file: 'local.json' });
@@ -49,11 +47,8 @@ module.exports = function(app, configurations, express) {
     app.use(express.cookieParser());
     app.use(express.session({
       secret: nconf.get('session_secret'),
-      store: new RedisStore({ db: nconf.get('redis_db'), prefix: 'meatspacechat' }),
       cookie: { maxAge: maxAge }
     }));
-    app.use(passport.initialize());
-    app.use(passport.session());
     app.use(checkApiKey);
     app.use(clientBypassCSRF);
     app.use(function (req, res, next) {
